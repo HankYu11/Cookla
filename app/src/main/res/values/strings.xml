@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Fridge</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="market">
+        <item>台北一</item>
+        <item>台北二</item>
+    </string-array>
+</resources>

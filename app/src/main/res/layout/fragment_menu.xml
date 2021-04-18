@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fridge_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".menu.MenuFragment">
+
+            <!-- date title -->
+        <TextView
+            android:id="@+id/date_display_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2018"
+            android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+            android:textColor="#222222"
+            android:textSize="30sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+            <!-- date title -->
+        <TextView
+            android:id="@+id/date_display_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feb"
+            android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+            android:textColor="#222222"
+            android:textSize="30sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/date_display_year"
+            app:layout_constraintTop_toTopOf="parent" />
+            <!-- date title -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
