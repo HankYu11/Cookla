@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="ingredient"
+            type="com.flowerish.cookla.domain.DayIngredient" />
+    </data>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_dayIngredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white">
+
+            <TextView
+                android:id="@+id/tv_ingredient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/dayIngredient(ingredient.name, ingredient.portions)}"
+                tools:text="蒜頭\n1份"
+                android:layout_margin="5dp"/>
+            <ImageView
+                android:id="@+id/iv_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_check"/>
+        </androidx.cardview.widget.CardView>
+
+</layout>

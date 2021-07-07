@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "510435671891",
+    "project_id": "cookla-544ea",
+    "storage_bucket": "cookla-544ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510435671891:android:bd85536c7ba39e35df2ba6",
+        "android_client_info": {
+          "package_name": "com.flowerish.cookla"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "510435671891-bvmi5araov51khk91ik0h20tvjs80r43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHaYVZrtJenF1569CUhS8V-HqySDGqrP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "510435671891-bvmi5araov51khk91ik0h20tvjs80r43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,39 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.flowerish.cookla.viewModels.PriceViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fridge_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".menu.MenuFragment">
+        tools:context=".ui.MenuFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/lo_top"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            app:layout_constraintEnd_toEndOf="parent"
+        <Spinner
+            android:id="@+id/spinner_market"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <Spinner
-                android:id="@+id/spinner_market"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_fridge"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lo_top" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_market"
+            app:priceListData="@{viewModel.agricultureList}" />
+
+        <TextView
+            android:id="@+id/tv_search_crop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="蔬果名 :"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner_market"
+            app:layout_constraintStart_toEndOf="@+id/spinner_market"
+            app:layout_constraintTop_toTopOf="@+id/spinner_market" />
+
+        <EditText
+            android:id="@+id/et_search_crop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@={viewModel.agricultureName}"
+            android:hint="請輸入想找的蔬果名稱"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_search_crop"
+            app:layout_constraintStart_toEndOf="@+id/tv_search_crop"
+            app:layout_constraintTop_toTopOf="@+id/tv_search_crop" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

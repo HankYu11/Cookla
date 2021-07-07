@@ -6,7 +6,7 @@
     app:startDestination="@id/pagerFragment">
     <fragment
         android:id="@+id/pagerFragment"
-        android:name="com.example.fridge.pager.PagerFragment"
+        android:name="com.flowerish.cookla.ui.PagerFragment"
         android:label="fragment_pager"
         tools:layout="@layout/fragment_pager" />
 </navigation>
