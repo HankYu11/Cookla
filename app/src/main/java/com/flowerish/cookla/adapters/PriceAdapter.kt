@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.flowerish.cookla.R
 import com.flowerish.cookla.databinding.RecyclerItemPriceBinding
 import com.flowerish.cookla.domain.Agriculture
 
@@ -20,8 +21,9 @@ class PriceAdapter : ListAdapter<Agriculture, PriceAdapter.PriceViewHolder>(Frid
 
     class PriceViewHolder(private val binding: RecyclerItemPriceBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : Agriculture){
-            binding.tvName.text = item.name
-            binding.tvPrice.text = item.avgPrice
+            binding.tvName.text = item.name.substringBefore('-')
+            binding.tvSubName.text = item.name.substringAfter('-')
+            binding.tvPrice.text = binding.root.context.getString(R.string.agriAvgPrice, item.avgPrice)
         }
 
         companion object{
