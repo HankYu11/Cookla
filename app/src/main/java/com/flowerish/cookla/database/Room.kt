@@ -1,6 +1,7 @@
 package com.flowerish.cookla.database
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
 import java.time.LocalDate
 
@@ -76,6 +77,6 @@ interface FridgeDao{
     fun deleteAllAgriculture()
 
     @Query("select * from agriculture")
-    fun getAllAgriculture(): LiveData<List<DatabaseAgriculture>>
+    fun getAllAgriculture(): PagingSource<Int, DatabaseAgriculture>
 
 }

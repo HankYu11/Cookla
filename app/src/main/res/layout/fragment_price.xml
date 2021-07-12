@@ -31,8 +31,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_market"
-            app:priceListData="@{viewModel.agricultureList}" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_market"/>
+<!--            app:priceListData="@{viewModel.agricultureList}"-->
 
         <TextView
             android:id="@+id/tv_search_crop"

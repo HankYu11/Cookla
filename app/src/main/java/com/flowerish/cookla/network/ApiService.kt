@@ -16,16 +16,16 @@ enum class MarketFilter(val marketName: String?) {
     TAIPEI_MARKET("台北市場"),
     ALL(null)
 }
-
-private val moshi = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
-
-private val retrofit = Retrofit.Builder()
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .addCallAdapterFactory(CoroutineCallAdapterFactory())
-    .baseUrl(BASE_URL)
-    .build()
+//
+//private val moshi = Moshi.Builder()
+//    .add(KotlinJsonAdapterFactory())
+//    .build()
+//
+//private val retrofit = Retrofit.Builder()
+//    .addConverterFactory(MoshiConverterFactory.create(moshi))
+//    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+//    .baseUrl(BASE_URL)
+//    .build()
 
 interface ApiService {
     @GET("AgriProductsTransType/")
@@ -35,8 +35,8 @@ interface ApiService {
     ): Deferred<Response>
 }
 
-object AgricultureApi {
-    val retrofitService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
-    }
-}
+//object AgricultureApi {
+//    val retrofitService: ApiService by lazy {
+//        retrofit.create(ApiService::class.java)
+//    }
+//}

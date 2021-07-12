@@ -67,6 +67,10 @@ fun List<DatabaseBuyingIngredient>.asDomainBuyingIngredientList(): List<BuyingIn
     }
 }
 
+fun DatabaseAgriculture.asDomainAgriculture(): Agriculture{
+    return Agriculture(avgPrice, name, marketName)
+}
+
 
 /**
  * one to many relation (not in use)
