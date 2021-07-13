@@ -22,8 +22,7 @@ import javax.inject.Inject
 
 class FridgeRepository @Inject constructor(
     private val dao: FridgeDao,
-    private val service: ApiService,
-    private val database: FridgeDatabase
+    private val service: ApiService
 ) {
     /**
      * Ingredient

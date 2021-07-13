@@ -16,14 +16,27 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_buying"
-            app:buyingListData="@{viewModel.buyingIngredientList}"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:buyingListData="@{viewModel.buyingIngredientList}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_buying_add"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:listitem="@layout/recycler_item_stock" />
+
+        <Button
+            android:id="@+id/btn_buying_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="Button"
+            android:onClick="@{()->viewModel.onAddClick()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

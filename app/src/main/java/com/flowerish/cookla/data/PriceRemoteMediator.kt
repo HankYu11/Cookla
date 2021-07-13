@@ -29,7 +29,9 @@ class PriceRemoteMediator(
             val response = service.getPropertiesAsync(marketName,cropName).await()
             withContext(Dispatchers.IO) {
                 if (loadType == LoadType.REFRESH) dao.deleteAllAgriculture()
-                dao.insertAllAgriculture(*response.dataList.asDatabaseAgriculture())
+                dao.insertAllAgriculture(*response.dataList.filter {
+                    it.name != "休市"
+                }.asDatabaseAgriculture())
             }
             MediatorResult.Success(endOfPaginationReached = true)
         }catch (exception: IOException) {

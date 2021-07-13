@@ -61,7 +61,8 @@ class PagerAdapter(val fragment : Fragment) : FragmentStateAdapter(fragment){
             1 -> StockFragment()
             2 -> MenuFragment()
             3 -> BuyingFragment()
-            else -> PriceFragment()
+            4 -> PriceFragment()
+            else -> Fragment()
         }
     }
 }

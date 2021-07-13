@@ -64,6 +64,7 @@ class PriceFragment : Fragment(), AdapterView.OnItemSelectedListener {
         lifecycleScope.launch {
             viewModel.getAgriList(marketFilter, cropName).collect {
                 adapter.submitData(it)
+                binding.rvFridge.scrollToPosition(0)
             }
         }
     }

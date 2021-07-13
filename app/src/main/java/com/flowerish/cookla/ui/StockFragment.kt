@@ -40,6 +40,7 @@ class StockFragment : Fragment() {
         return binding.root
     }
 
+    //之後可以把這個class變成通用的
     class AddWindow(val viewModel: StockViewModel) :
         DialogFragment() {
         override fun onCreateView(
