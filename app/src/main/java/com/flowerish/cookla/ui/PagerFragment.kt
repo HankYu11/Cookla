@@ -14,13 +14,21 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class PagerFragment : Fragment() {
 
+    lateinit var binding: FragmentPagerBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentPagerBinding>(inflater,R.layout.fragment_pager,container,false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_pager,container,false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewPager.adapter = PagerAdapter(this)
         binding.viewPager.isUserInputEnabled = false
+        binding.viewPager.offscreenPageLimit = 4
+        
         TabLayoutMediator(binding.tabLayout, binding.viewPager){tab, position ->
             when(position){
                 0 -> {
@@ -45,15 +53,11 @@ class PagerFragment : Fragment() {
                 }
             }
         }.attach()
-
-        return binding.root
     }
 }
 
 class PagerAdapter(val fragment : Fragment) : FragmentStateAdapter(fragment){
-    override fun getItemCount(): Int {
-        return 5
-    }
+    override fun getItemCount(): Int = 5
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
@@ -64,5 +68,6 @@ class PagerAdapter(val fragment : Fragment) : FragmentStateAdapter(fragment){
             4 -> PriceFragment()
             else -> Fragment()
         }
+
     }
 }
