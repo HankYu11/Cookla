@@ -3,10 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/pagerFragment">
+    app:startDestination="@id/menuFragment">
     <fragment
-        android:id="@+id/pagerFragment"
-        android:name="com.flowerish.cookla.ui.PagerFragment"
-        android:label="fragment_pager"
-        tools:layout="@layout/fragment_pager" />
+        android:id="@+id/buyingFragment"
+        android:name="com.flowerish.cookla.ui.BuyingFragment"
+        android:label="BuyingFragment" />
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.flowerish.cookla.ui.MenuFragment"
+        android:label="MenuFragment" />
+    <fragment
+        android:id="@+id/stockFragment"
+        android:name="com.flowerish.cookla.ui.StockFragment"
+        android:label="StockFragment" />
+    <fragment
+        android:id="@+id/priceFragment"
+        android:name="com.flowerish.cookla.ui.PriceFragment"
+        android:label="PriceFragment" />
+    <fragment
+        android:id="@+id/recipeFragment"
+        android:name="com.flowerish.cookla.ui.RecipeFragment"
+        android:label="RecipeFragment" />
 </navigation>

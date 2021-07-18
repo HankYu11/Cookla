@@ -38,8 +38,7 @@ class PriceAdapter : PagingDataAdapter<PriceUiModel, RecyclerView.ViewHolder>(Fr
         fun bind(item: Agriculture?) {
             binding.tvName.text = item?.name?.substringBefore('-')
             binding.tvSubName.text = item?.name?.substringAfter('-')
-            binding.tvPrice.text =
-                binding.root.context.getString(R.string.agriAvgPrice, item?.avgPrice)
+            binding.tvPrice.text = item?.avgPrice
         }
 
         companion object {

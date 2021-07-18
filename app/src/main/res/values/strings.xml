@@ -14,5 +14,9 @@
     <string name="btn_week_next_content">next week</string>
     <string name="dayIngredient">%1$s\n%2$d份</string>
     <string name="stockIngredient">%1$s: %2$d份 有效日期: %3$d天後</string>
-    <string name="agriAvgPrice">平均價: %1$s</string>
+    <string name="recipe">食譜</string>
+    <string name="storage">庫存</string>
+    <string name="menu">菜單</string>
+    <string name="buying">待買</string>
+    <string name="price">市價</string>
 </resources>
