@@ -15,6 +15,7 @@ import com.flowerish.cookla.databinding.LayoutAddMenuPopupBinding
 import com.flowerish.cookla.viewModels.MenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
+import java.util.*
 
 @AndroidEntryPoint
 class MenuFragment : Fragment() {
@@ -29,7 +30,7 @@ class MenuFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        binding.rvDay.adapter = DayAdapter(viewModel)
+        //todo viewpager adapter
 
         viewModel.popupAdd.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { date ->

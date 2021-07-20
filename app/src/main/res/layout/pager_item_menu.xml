@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.flowerish.cookla.viewModels.MenuViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fridge_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.MenuFragment">
+
+            <TextView
+                android:id="@+id/tv_date_year_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@{@string/year_month(viewModel.date.year,viewModel.date.month)}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="2021 May" />
+
+            <ImageView
+                android:id="@+id/btn_week_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:contentDescription="@string/btn_week_previous_content"
+                android:onClick="@{() -> viewModel.adjustDate(false)}"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date_day"
+                app:layout_constraintEnd_toStartOf="@+id/tv_date_day"
+                app:layout_constraintTop_toTopOf="@+id/tv_date_day"
+                app:srcCompat="@drawable/ic_arrow_left" />
+
+            <ImageView
+                android:id="@+id/btn_week_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:contentDescription="@string/btn_week_next_content"
+                android:onClick="@{() -> viewModel.adjustDate(true)}"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date_day"
+                app:layout_constraintStart_toEndOf="@+id/tv_date_day"
+                app:layout_constraintTop_toTopOf="@+id/tv_date_day"
+                app:srcCompat="@drawable/ic_arrow_right" />
+
+            <TextView
+                android:id="@+id/tv_date_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:dateDay="@{viewModel.date}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_date_year_month"
+                tools:text="14日 - 20 日" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_day"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="32dp"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                app:dayListData="@{viewModel.weekList}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_date_day">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -8,7 +8,10 @@ import com.flowerish.cookla.domain.DayWithIngredients
 import com.flowerish.cookla.repository.FridgeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,6 +35,19 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
         }
     }
 
+    //目前想法: 滑到本周時載入前後一周
+    fun getWeek(){
+        val format: DateFormat = SimpleDateFormat("MM/dd/yyyy")
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.firstDayOfWeek = Calendar.MONDAY
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+
+        val days = arrayOfNulls<String>(7)
+        for (i in 0..6) {
+            days[i] = format.format(calendar.time)
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
+    }
     fun adjustDate(isNext: Boolean) {
         if (isNext) _date.value = _date.value!!.plusDays(7)
         else _date.value = _date.value!!.minusDays(7)
