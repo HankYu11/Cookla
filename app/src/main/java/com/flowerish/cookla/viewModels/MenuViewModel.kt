@@ -1,13 +1,16 @@
 package com.flowerish.cookla.viewModels
 
 import androidx.lifecycle.*
+import androidx.lifecycle.map
 import com.flowerish.cookla.Event
 import com.flowerish.cookla.domain.BuyingIngredient
 import com.flowerish.cookla.domain.DayIngredient
 import com.flowerish.cookla.domain.DayWithIngredients
 import com.flowerish.cookla.repository.FridgeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -16,6 +19,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(private val repository: FridgeRepository) : ViewModel() {
+
+    private val currentWeekCalendar = MutableStateFlow(Calendar.getInstance())
+
+    private val prevWeekCalendar: StateFlow<Calendar>
+        get() = currentWeekCalendar.let {
+            it.value.add(Calendar.DAY_OF_MONTH, -7)
+            it
+        }
+    private val nextWeekCalendar: StateFlow<Calendar>
+        get() = currentWeekCalendar.let {
+            it.value.add(Calendar.DAY_OF_MONTH, 7)
+            it
+        }
 
     private val _date = MutableLiveData(LocalDate.now())
     val date: LiveData<LocalDate>
@@ -35,7 +51,14 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
         }
     }
 
-    //目前想法: 滑到本周時載入前後一周
+    fun addWeek(){
+        val currentWeekCal = currentWeekCalendar.value
+        currentWeekCal.add(Calendar.DAY_OF_MONTH, 7)
+        currentWeekCalendar.value = currentWeekCal
+        val format: DateFormat = SimpleDateFormat("MM/dd/yyyy")
+        Timber.d("current: ${format.format(currentWeekCalendar.value.time)} prev: ${format.format(prevWeekCalendar.value.time)}")
+    }
+
     fun getWeek(){
         val format: DateFormat = SimpleDateFormat("MM/dd/yyyy")
         val calendar: Calendar = Calendar.getInstance()

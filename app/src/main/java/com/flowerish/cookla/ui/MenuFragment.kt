@@ -31,7 +31,10 @@ class MenuFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         //todo viewpager adapter
-
+        binding.btnTest.setOnClickListener {
+            viewModel.addWeek()
+        }
+        //use three fragments, when fragment selected , adjust three fragments(forward or backward) and sneakily scroll back to the middle fragment
         viewModel.popupAdd.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { date ->
                 AddWindow(viewModel, date).show(parentFragmentManager, "Add")
