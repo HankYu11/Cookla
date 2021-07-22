@@ -19,7 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(private val repository: FridgeRepository) : ViewModel() {
-
+    /**
+     * Now, new idea is using three fragments and try to update the list
+     */
     private val currentWeekCalendar = MutableStateFlow(Calendar.getInstance())
 
     private val prevWeekCalendar: StateFlow<Calendar>
