@@ -4,10 +4,10 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.flowerish.cookla.R
-import com.flowerish.cookla.domain.Agriculture
 import com.flowerish.cookla.domain.BuyingIngredient
 import com.flowerish.cookla.domain.DayWithIngredients
 import com.flowerish.cookla.domain.Ingredient
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
@@ -65,4 +65,10 @@ fun setIngredientText(textView: TextView, ingredient: Ingredient) {
 @BindingAdapter("buyingIngredientText")
 fun setIngredientText(textView: TextView, ingredient: BuyingIngredient) {
     textView.text = "name: ${ingredient.name}, portion: ${ingredient.portion}"
+}
+
+@BindingAdapter("menuYearMonth")
+fun TextView.setMenuYearMonth(weekList: List<Calendar>){
+    val format = SimpleDateFormat("yyyy MM")
+    text = "${format.format(weekList[0].time)} ${format.format(weekList[1].time)} ${format.format(weekList[2].time)}"
 }

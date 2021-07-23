@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import com.flowerish.cookla.R
 import com.flowerish.cookla.databinding.FragmentMenuBinding
 import com.flowerish.cookla.adapters.DayAdapter
+import com.flowerish.cookla.adapters.MenuPagerAdapter
 import com.flowerish.cookla.databinding.LayoutAddMenuPopupBinding
 import com.flowerish.cookla.viewModels.MenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,11 +31,14 @@ class MenuFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        //todo viewpager adapter
-        binding.btnTest.setOnClickListener {
-            viewModel.addWeek()
+
+        val adapter = MenuPagerAdapter()
+        binding.menuViewPager.adapter = adapter
+
+        viewModel.pagerWeekList.observe(viewLifecycleOwner){
+            adapter.submitList(it)
         }
-        //use three fragments, when fragment selected , adjust three fragments(forward or backward) and sneakily scroll back to the middle fragment
+
         viewModel.popupAdd.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { date ->
                 AddWindow(viewModel, date).show(parentFragmentManager, "Add")

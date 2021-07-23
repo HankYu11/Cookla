@@ -1,17 +1,16 @@
 package com.flowerish.cookla.viewModels
 
 import androidx.lifecycle.*
-import androidx.lifecycle.map
 import com.flowerish.cookla.Event
 import com.flowerish.cookla.domain.BuyingIngredient
 import com.flowerish.cookla.domain.DayIngredient
 import com.flowerish.cookla.domain.DayWithIngredients
 import com.flowerish.cookla.repository.FridgeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -22,18 +21,8 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
     /**
      * Now, new idea is using three fragments and try to update the list
      */
-    private val currentWeekCalendar = MutableStateFlow(Calendar.getInstance())
-
-    private val prevWeekCalendar: StateFlow<Calendar>
-        get() = currentWeekCalendar.let {
-            it.value.add(Calendar.DAY_OF_MONTH, -7)
-            it
-        }
-    private val nextWeekCalendar: StateFlow<Calendar>
-        get() = currentWeekCalendar.let {
-            it.value.add(Calendar.DAY_OF_MONTH, 7)
-            it
-        }
+    private val _pagerWeekList = MutableLiveData<List<List<Calendar>>>()
+    val pagerWeekList: LiveData<List<List<Calendar>>> = _pagerWeekList
 
     private val _date = MutableLiveData(LocalDate.now())
     val date: LiveData<LocalDate>
@@ -50,29 +39,38 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
     init {
         viewModelScope.launch {
             refreshWeekList()
+            _pagerWeekList.value = generateListOfWeek()
         }
     }
 
-    fun addWeek(){
-        val currentWeekCal = currentWeekCalendar.value
-        currentWeekCal.add(Calendar.DAY_OF_MONTH, 7)
-        currentWeekCalendar.value = currentWeekCal
-        val format: DateFormat = SimpleDateFormat("MM/dd/yyyy")
-        Timber.d("current: ${format.format(currentWeekCalendar.value.time)} prev: ${format.format(prevWeekCalendar.value.time)}")
+    //從2007年1月開始 因為剛好1/1星期一
+    private fun generateListOfWeek(): List<List<Calendar>>{
+        val calendar = Calendar.getInstance()
+        calendar.set(2007,1,1)
+        val sp = SimpleDateFormat("yyyy-MM-dd")
+
+        val mList = mutableListOf<List<Calendar>>()
+        //1601周約30年
+        for (i in 0..1600){
+            Timber.d(sp.format(calendar.time))
+            mList.add(generateWeek(calendar))
+            calendar.add(Calendar.DAY_OF_MONTH, 7)
+        }
+        return mList
     }
 
-    fun getWeek(){
-        val format: DateFormat = SimpleDateFormat("MM/dd/yyyy")
-        val calendar: Calendar = Calendar.getInstance()
+    private fun generateWeek(calendar: Calendar): List<Calendar>{
         calendar.firstDayOfWeek = Calendar.MONDAY
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
 
-        val days = arrayOfNulls<String>(7)
+        val weekList = mutableListOf<Calendar>()
         for (i in 0..6) {
-            days[i] = format.format(calendar.time)
+            weekList.add(calendar)
             calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
+        return weekList
     }
+
     fun adjustDate(isNext: Boolean) {
         if (isNext) _date.value = _date.value!!.plusDays(7)
         else _date.value = _date.value!!.minusDays(7)

@@ -21,7 +21,7 @@ class MenuCalendarView: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = DataBindingUtil.inflate<PagerItemMenuBinding>(inflater, R.layout.pager_item_menu, container, false)
-        binding.viewModel = viewModel
+
         return binding.root
     }
 

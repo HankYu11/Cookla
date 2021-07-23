@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="java.util.List"/>
+        <import type="java.util.Calendar"/>
         <variable
-            name="viewModel"
-            type="com.flowerish.cookla.viewModels.MenuViewModel" />
+            name="weekList"
+            type="List&lt;Calendar>" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -28,8 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@{@string/year_month(viewModel.date.year,viewModel.date.month)}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                app:menuYearMonth="@{weekList}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
                 android:contentDescription="@string/btn_week_previous_content"
-                android:onClick="@{() -> viewModel.adjustDate(false)}"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_date_day"
                 app:layout_constraintEnd_toStartOf="@+id/tv_date_day"
                 app:layout_constraintTop_toTopOf="@+id/tv_date_day"
@@ -53,7 +53,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:contentDescription="@string/btn_week_next_content"
-                android:onClick="@{() -> viewModel.adjustDate(true)}"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_date_day"
                 app:layout_constraintStart_toEndOf="@+id/tv_date_day"
                 app:layout_constraintTop_toTopOf="@+id/tv_date_day"
@@ -64,7 +63,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                app:dateDay="@{viewModel.date}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_date_year_month"
@@ -77,7 +75,6 @@
                 android:layout_marginTop="32dp"
                 android:clipToPadding="false"
                 android:orientation="vertical"
-                app:dayListData="@{viewModel.weekList}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
