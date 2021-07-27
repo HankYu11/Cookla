@@ -6,9 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.flowerish.cookla.databinding.PagerItemMenuBinding
+import com.flowerish.cookla.domain.DayWithIngredients
 import java.util.*
 
-class MenuPagerAdapter: ListAdapter<List<Calendar>, MenuPagerAdapter.MenuViewHolder>(MenuDiffCallBack) {
+class MenuPagerAdapter: ListAdapter<List<DayWithIngredients>, MenuPagerAdapter.MenuViewHolder>(MenuDiffCallBack) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         return MenuViewHolder.from(parent)
     }
@@ -19,8 +20,9 @@ class MenuPagerAdapter: ListAdapter<List<Calendar>, MenuPagerAdapter.MenuViewHol
 
     class MenuViewHolder(val binding: PagerItemMenuBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(weekList: List<Calendar>){
+        fun bind(weekList: List<DayWithIngredients>){
             binding.weekList = weekList
+//            binding.rvDay.adapter = DayAdapter()
         }
 
         companion object{
@@ -38,17 +40,17 @@ class MenuPagerAdapter: ListAdapter<List<Calendar>, MenuPagerAdapter.MenuViewHol
     }
 
     companion object{
-        object MenuDiffCallBack: DiffUtil.ItemCallback<List<Calendar>>() {
+        object MenuDiffCallBack: DiffUtil.ItemCallback<List<DayWithIngredients>>() {
             override fun areItemsTheSame(
-                oldItem: List<Calendar>,
-                newItem: List<Calendar>
+                oldItem: List<DayWithIngredients>,
+                newItem: List<DayWithIngredients>
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: List<Calendar>,
-                newItem: List<Calendar>
+                oldItem: List<DayWithIngredients>,
+                newItem: List<DayWithIngredients>
             ): Boolean {
                 return oldItem == newItem
             }

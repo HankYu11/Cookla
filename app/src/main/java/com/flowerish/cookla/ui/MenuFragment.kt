@@ -37,6 +37,7 @@ class MenuFragment : Fragment() {
 
         viewModel.pagerWeekList.observe(viewLifecycleOwner){
             adapter.submitList(it)
+            binding.menuViewPager.currentItem = viewModel.currentDayPosition
         }
 
         viewModel.popupAdd.observe(viewLifecycleOwner) {

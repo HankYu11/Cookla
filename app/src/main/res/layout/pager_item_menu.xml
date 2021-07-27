@@ -8,7 +8,7 @@
         <import type="java.util.Calendar"/>
         <variable
             name="weekList"
-            type="List&lt;Calendar>" />
+            type="List&lt;com.flowerish.cookla.domain.DayWithIngredients>" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -66,6 +66,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_date_year_month"
+                app:weekFirstAndLastDay="@{weekList}"
+
                 tools:text="14日 - 20 日" />
 
             <androidx.recyclerview.widget.RecyclerView

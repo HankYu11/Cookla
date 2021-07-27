@@ -8,6 +8,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 
 class Event<T>(val content: T){
 
@@ -64,3 +67,7 @@ inline fun <reified T> Flow<T>.observeOnLifecycle(
 inline fun <reified T> Flow<T>.observeInLifecycle(
     lifecycleOwner: LifecycleOwner
 ) = FlowObserver(lifecycleOwner, this, {})
+
+fun Date.toLocalDate(): LocalDate{
+    return this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+}

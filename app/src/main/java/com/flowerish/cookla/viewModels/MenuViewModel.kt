@@ -2,10 +2,12 @@ package com.flowerish.cookla.viewModels
 
 import androidx.lifecycle.*
 import com.flowerish.cookla.Event
+import com.flowerish.cookla.R
 import com.flowerish.cookla.domain.BuyingIngredient
 import com.flowerish.cookla.domain.DayIngredient
 import com.flowerish.cookla.domain.DayWithIngredients
 import com.flowerish.cookla.repository.FridgeRepository
+import com.flowerish.cookla.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,11 +20,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(private val repository: FridgeRepository) : ViewModel() {
-    /**
-     * Now, new idea is using three fragments and try to update the list
-     */
-    private val _pagerWeekList = MutableLiveData<List<List<Calendar>>>()
-    val pagerWeekList: LiveData<List<List<Calendar>>> = _pagerWeekList
+
+    private val _pagerWeekList = MutableLiveData<List<List<DayWithIngredients>>>()
+    val pagerWeekList: LiveData<List<List<DayWithIngredients>>> = _pagerWeekList
+
+    private val currentDay = Calendar.getInstance()
+    var currentDayPosition = 0
 
     private val _date = MutableLiveData(LocalDate.now())
     val date: LiveData<LocalDate>
@@ -38,35 +41,40 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
 
     init {
         viewModelScope.launch {
-            refreshWeekList()
-            _pagerWeekList.value = generateListOfWeek()
+//            refreshWeekList()
+            generateListOfWeek()
         }
     }
 
     //從2007年1月開始 因為剛好1/1星期一
-    private fun generateListOfWeek(): List<List<Calendar>>{
+    private suspend fun generateListOfWeek(){
         val calendar = Calendar.getInstance()
         calendar.set(2007,1,1)
-        val sp = SimpleDateFormat("yyyy-MM-dd")
-
-        val mList = mutableListOf<List<Calendar>>()
+        val mList = mutableListOf<List<DayWithIngredients>>()
         //1601周約30年
         for (i in 0..1600){
-            Timber.d(sp.format(calendar.time))
+            if(calendar.get(Calendar.WEEK_OF_YEAR) == currentDay.get(Calendar.WEEK_OF_YEAR) &&
+                calendar.get(Calendar.YEAR) == currentDay.get(Calendar.YEAR)){
+                currentDayPosition = i
+            }
             mList.add(generateWeek(calendar))
             calendar.add(Calendar.DAY_OF_MONTH, 7)
         }
-        return mList
+        _pagerWeekList.value = mList
     }
 
-    private fun generateWeek(calendar: Calendar): List<Calendar>{
+    private suspend fun generateWeek(calendar: Calendar): List<DayWithIngredients>{
         calendar.firstDayOfWeek = Calendar.MONDAY
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-
-        val weekList = mutableListOf<Calendar>()
+        val weekList = mutableListOf<DayWithIngredients>()
         for (i in 0..6) {
-            weekList.add(calendar)
-            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            val date = calendar.time.toLocalDate().plusDays(i.toLong())
+            val dailyList = repository.getDayIngredientListInDay(date)
+            if (dailyList.isNotEmpty()) {
+                weekList.add(DayWithIngredients(date, dailyList))
+            } else {
+                weekList.add(DayWithIngredients(date))
+            }
         }
         return weekList
     }

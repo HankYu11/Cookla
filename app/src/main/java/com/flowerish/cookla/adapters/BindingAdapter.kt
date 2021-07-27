@@ -7,6 +7,7 @@ import com.flowerish.cookla.R
 import com.flowerish.cookla.domain.BuyingIngredient
 import com.flowerish.cookla.domain.DayWithIngredients
 import com.flowerish.cookla.domain.Ingredient
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -68,7 +69,11 @@ fun setIngredientText(textView: TextView, ingredient: BuyingIngredient) {
 }
 
 @BindingAdapter("menuYearMonth")
-fun TextView.setMenuYearMonth(weekList: List<Calendar>){
-    val format = SimpleDateFormat("yyyy MM")
-    text = "${format.format(weekList[0].time)} ${format.format(weekList[1].time)} ${format.format(weekList[2].time)}"
+fun TextView.setMenuYearMonth(weekList: List<DayWithIngredients>){
+    text = context.getString(R.string.year_month, weekList[0].date.year, weekList[0].date.month)
+}
+
+@BindingAdapter("weekFirstAndLastDay")
+fun TextView.setWeekFirstAndLastDay(weekList: List<DayWithIngredients?>){
+    text = context.getString(R.string.date_day,weekList[0]?.date?.dayOfMonth, weekList[6]?.date?.dayOfMonth)
 }
