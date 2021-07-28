@@ -7,22 +7,23 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.flowerish.cookla.databinding.PagerItemMenuBinding
 import com.flowerish.cookla.domain.DayWithIngredients
+import com.flowerish.cookla.viewModels.MenuViewModel
 import java.util.*
 
-class MenuPagerAdapter: ListAdapter<List<DayWithIngredients>, MenuPagerAdapter.MenuViewHolder>(MenuDiffCallBack) {
+class MenuPagerAdapter(private val viewModel: MenuViewModel): ListAdapter<List<DayWithIngredients>, MenuPagerAdapter.MenuViewHolder>(MenuDiffCallBack) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         return MenuViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), viewModel)
     }
 
     class MenuViewHolder(val binding: PagerItemMenuBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(weekList: List<DayWithIngredients>){
+        fun bind(weekList: List<DayWithIngredients>, viewModel: MenuViewModel){
             binding.weekList = weekList
-//            binding.rvDay.adapter = DayAdapter()
+            binding.rvDay.adapter = DayAdapter(viewModel)
         }
 
         companion object{

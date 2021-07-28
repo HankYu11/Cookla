@@ -10,6 +10,8 @@ import com.flowerish.cookla.repository.FridgeRepository
 import com.flowerish.cookla.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -39,9 +41,16 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
     val popupAdd: LiveData<Event<LocalDate>>
         get() = _popupAdd
 
+    sealed class MenuEvent{
+        object RefreshData: MenuEvent()
+    }
+
+    private val eventChannel = Channel<MenuEvent>(Channel.BUFFERED)
+    val eventsFlow = eventChannel.receiveAsFlow()
+
+
     init {
         viewModelScope.launch {
-//            refreshWeekList()
             generateListOfWeek()
         }
     }
@@ -102,7 +111,7 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
                 }
             }
             repository.addDayIngredient(date, name, portions, false)
-            refreshWeekList()
+            eventChannel.send(MenuEvent.RefreshData)
         }
     }
 
