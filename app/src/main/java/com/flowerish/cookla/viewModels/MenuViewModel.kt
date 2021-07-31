@@ -1,32 +1,31 @@
 package com.flowerish.cookla.viewModels
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.flowerish.cookla.Event
-import com.flowerish.cookla.R
 import com.flowerish.cookla.domain.BuyingIngredient
 import com.flowerish.cookla.domain.DayIngredient
 import com.flowerish.cookla.domain.DayWithIngredients
 import com.flowerish.cookla.repository.FridgeRepository
 import com.flowerish.cookla.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
-import java.text.SimpleDateFormat
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.temporal.WeekFields
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(private val repository: FridgeRepository) : ViewModel() {
 
-    private val _pagerWeekList = MutableLiveData<List<List<DayWithIngredients>>>()
-    val pagerWeekList: LiveData<List<List<DayWithIngredients>>> = _pagerWeekList
+    private val _pagerWeekList = MutableLiveData<MutableList<List<DayWithIngredients>>>()
+    val pagerWeekList: LiveData<MutableList<List<DayWithIngredients>>> = _pagerWeekList
 
-    private val currentDay = Calendar.getInstance()
     var currentDayPosition = 0
 
     private val _date = MutableLiveData(LocalDate.now())
@@ -41,8 +40,8 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
     val popupAdd: LiveData<Event<LocalDate>>
         get() = _popupAdd
 
-    sealed class MenuEvent{
-        object RefreshData: MenuEvent()
+    sealed class MenuEvent {
+        object RefreshData : MenuEvent()
     }
 
     private val eventChannel = Channel<MenuEvent>(Channel.BUFFERED)
@@ -56,33 +55,31 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
     }
 
     //從2007年1月開始 因為剛好1/1星期一
-    private suspend fun generateListOfWeek(){
-        val calendar = Calendar.getInstance()
-        calendar.set(2007,1,1)
+    private suspend fun generateListOfWeek() {
+        var calendar = LocalDate.of(2020,1,1)
         val mList = mutableListOf<List<DayWithIngredients>>()
         //1601周約30年
-        for (i in 0..1600){
-            if(calendar.get(Calendar.WEEK_OF_YEAR) == currentDay.get(Calendar.WEEK_OF_YEAR) &&
-                calendar.get(Calendar.YEAR) == currentDay.get(Calendar.YEAR)){
+        for (i in 0..300) {
+            if (calendar.toEpochDay() == LocalDate.now().with(DayOfWeek.WEDNESDAY).toEpochDay()){
                 currentDayPosition = i
             }
             mList.add(generateWeek(calendar))
-            calendar.add(Calendar.DAY_OF_MONTH, 7)
+            calendar = calendar.plusDays(7L)
         }
         _pagerWeekList.value = mList
     }
 
-    private suspend fun generateWeek(calendar: Calendar): List<DayWithIngredients>{
-        calendar.firstDayOfWeek = Calendar.MONDAY
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+    private suspend fun generateWeek(date: LocalDate): List<DayWithIngredients> {
+//        calendar.firstDayOfWeek = Calendar.MONDAY
+//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
         val weekList = mutableListOf<DayWithIngredients>()
-        for (i in 0..6) {
-            val date = calendar.time.toLocalDate().plusDays(i.toLong())
-            val dailyList = repository.getDayIngredientListInDay(date)
+        for (i in 1..7) {
+            val mDate = date.with(WeekFields.of(Locale.FRANCE).dayOfWeek(),i.toLong())
+            val dailyList = repository.getDayIngredientListInDay(mDate)
             if (dailyList.isNotEmpty()) {
-                weekList.add(DayWithIngredients(date, dailyList))
+                weekList.add(DayWithIngredients(mDate, dailyList))
             } else {
-                weekList.add(DayWithIngredients(date))
+                weekList.add(DayWithIngredients(mDate))
             }
         }
         return weekList
@@ -100,17 +97,26 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
         _popupAdd.value = Event(date)
     }
 
-    fun onPopupAddClick(date: LocalDate, name: String, portions: Int) {
+    fun onPopupAddClick(date: LocalDate, name: String, portions: Int, currentPage: Int) {
         viewModelScope.launch {
-            if(repository.getIngredient(name) == null){
-                repository.addBuyingIngredient(BuyingIngredient(name,portions))
+            if (repository.getIngredient(name) == null) {
+                repository.addBuyingIngredient(BuyingIngredient(name, portions))
             }
             repository.getIngredient(name)?.let { ingredient ->
-                if(ingredient.portions < portions){
-                    repository.addBuyingIngredient(BuyingIngredient(name, portions - ingredient.portions))
+                if (ingredient.portions < portions) {
+                    repository.addBuyingIngredient(
+                        BuyingIngredient(
+                            name,
+                            portions - ingredient.portions
+                        )
+                    )
                 }
             }
             repository.addDayIngredient(date, name, portions, false)
+
+            val currentDay = _pagerWeekList.value?.get(currentPage)?.get(0)?.date
+            _pagerWeekList.value?.removeAt(currentPage)
+            _pagerWeekList.value?.add(currentPage, generateWeek(currentDay!!))
             eventChannel.send(MenuEvent.RefreshData)
         }
     }

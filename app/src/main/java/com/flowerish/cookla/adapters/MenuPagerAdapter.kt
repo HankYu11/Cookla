@@ -12,12 +12,15 @@ import java.util.*
 
 class MenuPagerAdapter(private val viewModel: MenuViewModel): ListAdapter<List<DayWithIngredients>, MenuPagerAdapter.MenuViewHolder>(MenuDiffCallBack) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
+
         return MenuViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         holder.bind(getItem(position), viewModel)
     }
+
+
 
     class MenuViewHolder(val binding: PagerItemMenuBinding): RecyclerView.ViewHolder(binding.root) {
 

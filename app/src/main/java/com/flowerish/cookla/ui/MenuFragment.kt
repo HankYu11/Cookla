@@ -12,6 +12,7 @@ import com.flowerish.cookla.R
 import com.flowerish.cookla.adapters.MenuPagerAdapter
 import com.flowerish.cookla.databinding.FragmentMenuBinding
 import com.flowerish.cookla.databinding.LayoutAddMenuPopupBinding
+import com.flowerish.cookla.observeInLifecycle
 import com.flowerish.cookla.viewModels.MenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
@@ -38,12 +39,12 @@ class MenuFragment : Fragment() {
 
         viewModel.pagerWeekList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            binding.menuViewPager.currentItem = viewModel.currentDayPosition
+            binding.menuViewPager.setCurrentItem(viewModel.currentDayPosition, false)
         }
 
         viewModel.popupAdd.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { date ->
-                AddWindow(viewModel, date).show(parentFragmentManager, "Add")
+                AddWindow(viewModel, date, binding.menuViewPager.currentItem).show(parentFragmentManager, "Add")
             }
         }
 
@@ -57,13 +58,14 @@ class MenuFragment : Fragment() {
                 when(it){
                     MenuViewModel.MenuEvent.RefreshData -> {
                         Timber.d("Event !!!")
-                        binding.menuViewPager.adapter?.notifyDataSetChanged()
+                        binding.menuViewPager.adapter?.notifyItemChanged(binding.menuViewPager.currentItem)
                     }
                 }
             }
+            .observeInLifecycle(viewLifecycleOwner)
     }
 
-    class AddWindow(val viewModel: MenuViewModel, val date: LocalDate) : DialogFragment() {
+    class AddWindow(val viewModel: MenuViewModel, val date: LocalDate, val currentPage: Int) : DialogFragment() {
         override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -79,7 +81,8 @@ class MenuFragment : Fragment() {
                 viewModel.onPopupAddClick(
                     date,
                     binding.etIngredientName.text.toString(),
-                    binding.etIngredientAmount.text.toString().toInt()
+                    binding.etIngredientAmount.text.toString().toInt(),
+                    currentPage
                 )
                 this@AddWindow.dismiss()
             }
