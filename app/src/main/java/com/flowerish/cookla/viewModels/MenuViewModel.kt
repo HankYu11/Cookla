@@ -54,7 +54,7 @@ class MenuViewModel @Inject constructor(private val repository: FridgeRepository
         }
     }
 
-    //從2007年1月開始 因為剛好1/1星期一
+    //2007/1/1星期一，改成2020開始不然讀太久
     private suspend fun generateListOfWeek() {
         var calendar = LocalDate.of(2020,1,1)
         val mList = mutableListOf<List<DayWithIngredients>>()

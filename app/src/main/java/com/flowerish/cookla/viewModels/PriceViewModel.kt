@@ -5,51 +5,41 @@ import androidx.paging.*
 import com.flowerish.cookla.database.asDomainAgriculture
 import com.flowerish.cookla.domain.Agriculture
 import com.flowerish.cookla.network.MarketFilter
-import com.flowerish.cookla.network.NetAgriculture
 import com.flowerish.cookla.repository.FridgeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PriceViewModel @Inject constructor(private val repository: FridgeRepository) : ViewModel() {
 
-    var currentSearchResult: Flow<PagingData<PriceUiModel>>? = null
-
-    private val _marketFilter = MutableLiveData<MarketFilter>()
+    private val marketFilter = MutableLiveData<MarketFilter>()
 
     val agricultureName = MutableLiveData<String>()
 
-    val combinedData = CombinedMarketCrop(_marketFilter, agricultureName)
+    val searchCondition = CombinedMarketCrop(marketFilter, agricultureName)
 
-    @ExperimentalPagingApi
-    fun getAgriList(
-        marketFilter: MarketFilter?,
-        agricultureName: String?
-    ): Flow<PagingData<PriceUiModel>> {
-        val newData = repository.getAgriculture(
-            cropName = agricultureName,
-            marketName = marketFilter?.marketName
-        )
-            .map { pagingData -> pagingData.map { PriceUiModel.AgricultureItem(it.asDomainAgriculture()) }}
-            .map {
-                it.insertSeparators<PriceUiModel.AgricultureItem, PriceUiModel>{ before, after ->
-                    if(before == null){
-                        return@insertSeparators PriceUiModel.HeaderItem
-                    }else{
-                        return@insertSeparators null
-                    }
+    val agricultureList = repository.allAgriculture
+        .map { pagingData -> pagingData.map { PriceUiModel.AgricultureItem(it.asDomainAgriculture()) } }
+        .map {
+            it.insertSeparators { before, after ->
+                if (before == null) {
+                    return@insertSeparators PriceUiModel.HeaderItem
+                } else {
+                    return@insertSeparators null
                 }
             }
-        currentSearchResult = newData
-        return newData
+        }
+
+    fun search(marketFilter: MarketFilter?,
+               agricultureName: String?){
+        viewModelScope.launch {
+            repository.refreshAgriculture(marketFilter?.marketName, agricultureName)
+        }
     }
 
     fun setMarketFilter(marketFilter: MarketFilter) {
-        _marketFilter.value = marketFilter
+        this.marketFilter.value = marketFilter
     }
 
     class CombinedMarketCrop(
@@ -76,7 +66,7 @@ class PriceViewModel @Inject constructor(private val repository: FridgeRepositor
     }
 }
 
-sealed class PriceUiModel{
-    object HeaderItem: PriceUiModel()
-    data class AgricultureItem(val agriculture: Agriculture): PriceUiModel()
+sealed class PriceUiModel {
+    object HeaderItem : PriceUiModel()
+    data class AgricultureItem(val agriculture: Agriculture) : PriceUiModel()
 }

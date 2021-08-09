@@ -40,4 +40,8 @@ class PriceRemoteMediator(
             MediatorResult.Error(exception)
         }
     }
+
+    override suspend fun initialize(): InitializeAction {
+        return super.initialize()
+    }
 }

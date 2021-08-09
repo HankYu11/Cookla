@@ -23,5 +23,6 @@
     <fragment
         android:id="@+id/recipeFragment"
         android:name="com.flowerish.cookla.ui.RecipeFragment"
-        android:label="RecipeFragment" />
+        android:label="RecipeFragment" >
+    </fragment>
 </navigation>

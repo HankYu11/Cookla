@@ -10,14 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.ExperimentalPagingApi
 import com.flowerish.cookla.R
 import com.flowerish.cookla.adapters.PriceAdapter
 import com.flowerish.cookla.databinding.FragmentPriceBinding
 import com.flowerish.cookla.network.MarketFilter
 import com.flowerish.cookla.viewModels.PriceViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -27,11 +25,10 @@ class PriceFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val adapter = PriceAdapter()
     private lateinit var binding: FragmentPriceBinding
 
-    @ExperimentalPagingApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_price, container, false
@@ -40,33 +37,27 @@ class PriceFragment : Fragment(), AdapterView.OnItemSelectedListener {
         binding.rvFridge.adapter = adapter
         binding.viewModel = viewModel
 
-        viewModel.combinedData.observe(viewLifecycleOwner) {
-//            viewModel.refreshAgricultureList(it.first, it.second)
-            search(it.first, it.second)
+        viewModel.agricultureList.observe(viewLifecycleOwner) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                adapter.submitData(it)
+            }
+        }
+
+        viewModel.searchCondition.observe(viewLifecycleOwner) {
+            viewModel.search(it.first, it.second)
         }
 
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.market,
             android.R.layout.simple_spinner_item
-        )
-            .also { adapter ->
+        ).also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerMarket.adapter = adapter
             }
         binding.spinnerMarket.onItemSelectedListener = this
 
         return binding.root
-    }
-
-    @ExperimentalPagingApi
-    fun search(marketFilter: MarketFilter?, cropName: String?) {
-        lifecycleScope.launch {
-            viewModel.getAgriList(marketFilter, cropName).collect {
-                adapter.submitData(it)
-                binding.rvFridge.scrollToPosition(0)
-            }
-        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
