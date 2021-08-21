@@ -20,12 +20,6 @@ fun submitDayList(recyclerView: RecyclerView, data: List<DayWithIngredients>?) {
     adapter.submitList(data)
 }
 
-//@BindingAdapter("priceListData")
-//fun submitPriceList(recyclerView: RecyclerView, data: List<Agriculture>?) {
-//    val adapter = recyclerView.adapter as PriceAdapter
-//    adapter.submitList(data)
-//}
-
 @BindingAdapter("ingredientListData")
 fun submitIngredientList(recyclerView: RecyclerView, data: List<Ingredient>?) {
     val adapter = recyclerView.adapter as StockAdapter

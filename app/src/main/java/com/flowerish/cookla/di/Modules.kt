@@ -46,7 +46,6 @@ object DatabaseModule {
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-    private const val BASE_URL = "https://data.coa.gov.tw/api/v1/"
 
     @Singleton
     @Provides
@@ -68,7 +67,7 @@ object ApiModule {
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .client(httpClient)
-        .baseUrl(BASE_URL)
+        .baseUrl(ApiService.BASE_URL)
         .build()
 
     @Singleton

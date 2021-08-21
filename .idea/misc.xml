@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/HankYu/AndroidStudioProjects/Cookla/app/src/main/res/layout/fragment_menu.xml" value="0.13703703703703704" />
+        <entry key="..\:/Users/HankYu/AndroidStudioProjects/Cookla/app/src/main/res/layout/layout_add_menu_popup.xml" value="0.264" />
+        <entry key="..\:/Users/HankYu/AndroidStudioProjects/Cookla/app/src/main/res/layout/pager_item_menu.xml" value="0.13703703703703704" />
+        <entry key="..\:/Users/HankYu/AndroidStudioProjects/Cookla/app/src/main/res/layout/recycler_item_day.xml" value="0.536" />
+        <entry key="..\:/Users/HankYu/AndroidStudioProjects/Cookla/app/src/main/res/layout/recycler_item_ingredient.xml" value="0.6" />
       </map>
     </option>
   </component>

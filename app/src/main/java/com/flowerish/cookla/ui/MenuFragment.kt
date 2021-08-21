@@ -8,45 +8,33 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.flowerish.cookla.R
 import com.flowerish.cookla.adapters.MenuPagerAdapter
 import com.flowerish.cookla.databinding.FragmentMenuBinding
 import com.flowerish.cookla.databinding.LayoutAddMenuPopupBinding
 import com.flowerish.cookla.observeInLifecycle
 import com.flowerish.cookla.viewModels.MenuViewModel
+import com.flowerish.cookla.viewModels.MenuViewModel.MenuEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
+import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.*
 
 @AndroidEntryPoint
 class MenuFragment : Fragment() {
     private lateinit var binding: FragmentMenuBinding
 
     private val viewModel: MenuViewModel by viewModels()
+    private lateinit var adapter: MenuPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-
-        val adapter = MenuPagerAdapter(viewModel)
-        binding.menuViewPager.adapter = adapter
-
-        viewModel.pagerWeekList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            binding.menuViewPager.setCurrentItem(viewModel.currentDayPosition, false)
-        }
-
-        viewModel.popupAdd.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { date ->
-                AddWindow(viewModel, date, binding.menuViewPager.currentItem).show(parentFragmentManager, "Add")
-            }
-        }
+        setupBinding()
+        setupObserve()
 
         return binding.root
     }
@@ -55,38 +43,74 @@ class MenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.eventsFlow
             .onEach {
-                when(it){
-                    MenuViewModel.MenuEvent.RefreshData -> {
-                        Timber.d("Event !!!")
+                when (it) {
+                    is MenuEvent.RefreshData -> {
                         binding.menuViewPager.adapter?.notifyItemChanged(binding.menuViewPager.currentItem)
+                    }
+                    is MenuEvent.ScrollToCurrentDay -> {
+                        binding.menuViewPager.setCurrentItem(it.currentDayPosition, false)
                     }
                 }
             }
             .observeInLifecycle(viewLifecycleOwner)
     }
 
-    class AddWindow(val viewModel: MenuViewModel, val date: LocalDate, val currentPage: Int) : DialogFragment() {
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View {
-            val binding = DataBindingUtil.inflate<LayoutAddMenuPopupBinding>(
-                inflater,
-                R.layout.layout_add_menu_popup,
-                container,
-                false
-            )
-            binding.btnAddIngredient.setOnClickListener {
-                viewModel.onPopupAddClick(
-                    date,
-                    binding.etIngredientName.text.toString(),
-                    binding.etIngredientAmount.text.toString().toInt(),
-                    currentPage
-                )
-                this@AddWindow.dismiss()
-            }
-            return binding.root
+    private fun setupObserve() {
+        viewModel.pagerWeekList.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
         }
+
+        viewModel.popupAdd.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { date ->
+                MenuAddWindow(
+                    date,
+                    binding.menuViewPager.currentItem
+                ) { mDate, ingredientName, ingredientAmount, currentPage ->
+                    viewModel.onPopupAddClick(mDate, ingredientName, ingredientAmount, currentPage)
+                }
+                    .show(parentFragmentManager, "Add")
+            }
+        }
+    }
+
+    private fun setupBinding() {
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        adapter = MenuPagerAdapter(viewModel) {weekList, position ->
+            viewModel.updateDayWithIngredients(weekList, position)
+        }
+        binding.menuViewPager.adapter = adapter
+        binding.menuViewPager.offscreenPageLimit = 1
+    }
+
+}
+
+class MenuAddWindow(
+    private val date: LocalDate, private val currentPage: Int,
+    private val submitClick: (date: LocalDate, ingredientName: String, ingredientAmount: Int, currentPage: Int) -> Unit
+) : DialogFragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val binding = DataBindingUtil.inflate<LayoutAddMenuPopupBinding>(
+            inflater,
+            R.layout.layout_add_menu_popup,
+            container,
+            false
+        )
+
+        binding.btnAddIngredient.setOnClickListener {
+            submitClick(
+                date,
+                binding.etIngredientName.text.toString(),
+                binding.etIngredientAmount.text.toString().toInt(),
+                currentPage
+            )
+            this.dismiss()
+        }
+        return binding.root
     }
 }

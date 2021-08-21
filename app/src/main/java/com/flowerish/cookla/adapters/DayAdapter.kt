@@ -46,7 +46,7 @@ class DayAdapter(val viewModel: MenuViewModel) : ListAdapter<DayWithIngredients,
         }
 
         override fun areContentsTheSame(oldItem: DayWithIngredients, newItem: DayWithIngredients): Boolean {
-            return oldItem.date == newItem.date
+            return oldItem.date == newItem.date && oldItem.ingredientList == newItem.ingredientList
         }
 
     }

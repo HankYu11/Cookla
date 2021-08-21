@@ -16,4 +16,8 @@ interface ApiService {
         @Query("MarketName") marketName: String?,
         @Query("CropName") cropName: String?
     ): Deferred<Response>
+
+    companion object {
+        const val BASE_URL = "https://data.coa.gov.tw/api/v1/"
+    }
 }
