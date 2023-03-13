@@ -1,7 +1,7 @@
 package com.flowerish.cookla.domain
 
-import com.flowerish.cookla.database.DatabaseBuyingIngredient
-import com.flowerish.cookla.database.DatabaseDayIngredient
+import com.flowerish.cookla.data.database.DatabaseBuyingIngredient
+import com.flowerish.cookla.data.database.DatabaseDayIngredient
 import java.time.LocalDate
 
 data class Ingredient(
@@ -44,6 +44,6 @@ fun DayIngredient.asDatabaseDayIngredient(): DatabaseDayIngredient {
     )
 }
 
-fun BuyingIngredient.asDatabaseBuyingIngredient(): DatabaseBuyingIngredient{
+fun BuyingIngredient.asDatabaseBuyingIngredient(): DatabaseBuyingIngredient {
     return DatabaseBuyingIngredient(name, portion)
 }

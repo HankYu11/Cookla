@@ -1,6 +1,6 @@
-package com.flowerish.cookla.network
+package com.flowerish.cookla.data.network
 
-import com.flowerish.cookla.database.DatabaseAgriculture
+import com.flowerish.cookla.data.database.DatabaseAgriculture
 import com.flowerish.cookla.domain.Agriculture
 import com.squareup.moshi.Json
 

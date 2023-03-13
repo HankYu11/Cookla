@@ -1,7 +1,11 @@
-package com.flowerish.cookla.database
+package com.flowerish.cookla.data.database
 
-import androidx.room.*
-import com.flowerish.cookla.domain.*
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.flowerish.cookla.domain.Agriculture
+import com.flowerish.cookla.domain.BuyingIngredient
+import com.flowerish.cookla.domain.DayIngredient
+import com.flowerish.cookla.domain.Ingredient
 import java.time.LocalDate
 
 @Entity(tableName = "Ingredients", primaryKeys = ["name","expiringDate"])

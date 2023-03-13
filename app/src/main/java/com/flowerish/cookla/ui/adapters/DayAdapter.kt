@@ -1,4 +1,4 @@
-package com.flowerish.cookla.adapters
+package com.flowerish.cookla.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

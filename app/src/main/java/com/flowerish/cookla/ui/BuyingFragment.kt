@@ -9,17 +9,14 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.flowerish.cookla.R
-import com.flowerish.cookla.adapters.BuyingAdapter
 import com.flowerish.cookla.databinding.FragmentBuyingBinding
 import com.flowerish.cookla.databinding.LayoutAddMenuPopupBinding
-import com.flowerish.cookla.databinding.LayoutAddStockPopupBinding
 import com.flowerish.cookla.observeInLifecycle
+import com.flowerish.cookla.ui.adapters.BuyingAdapter
 import com.flowerish.cookla.viewModels.BuyingEvent
 import com.flowerish.cookla.viewModels.BuyingViewModel
-import com.flowerish.cookla.viewModels.StockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
-import java.time.LocalDate
 
 @AndroidEntryPoint
 class BuyingFragment : Fragment() {

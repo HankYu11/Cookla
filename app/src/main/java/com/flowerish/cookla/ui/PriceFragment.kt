@@ -6,14 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.flowerish.cookla.R
-import com.flowerish.cookla.adapters.PriceAdapter
+import com.flowerish.cookla.data.network.MarketFilter
 import com.flowerish.cookla.databinding.FragmentPriceBinding
-import com.flowerish.cookla.network.MarketFilter
+import com.flowerish.cookla.ui.adapters.PriceAdapter
 import com.flowerish.cookla.viewModels.PriceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -57,7 +60,13 @@ class PriceFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
         binding.spinnerMarket.onItemSelectedListener = this
 
-        return binding.root
+//        return binding.root
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                PriceScreen(viewModel)
+            }
+        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -71,4 +80,8 @@ class PriceFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
         println("nothing Selected !!!")
     }
+}
+
+@Composable
+fun PriceScreen(viewModel: PriceViewModel) {
 }

@@ -2,8 +2,8 @@ package com.flowerish.cookla.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flowerish.cookla.data.repository.FridgeRepository
 import com.flowerish.cookla.domain.BuyingIngredient
-import com.flowerish.cookla.repository.FridgeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

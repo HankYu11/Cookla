@@ -1,17 +1,17 @@
 package com.flowerish.cookla.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.flowerish.cookla.R
-import com.flowerish.cookla.adapters.StockAdapter
 import com.flowerish.cookla.databinding.FragmentStockBinding
 import com.flowerish.cookla.databinding.LayoutAddStockPopupBinding
+import com.flowerish.cookla.ui.adapters.StockAdapter
 import com.flowerish.cookla.viewModels.StockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate

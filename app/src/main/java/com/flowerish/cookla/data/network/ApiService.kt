@@ -1,4 +1,4 @@
-package com.flowerish.cookla.network
+package com.flowerish.cookla.data.network
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET

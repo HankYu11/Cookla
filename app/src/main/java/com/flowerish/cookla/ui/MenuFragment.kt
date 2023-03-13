@@ -8,17 +8,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.flowerish.cookla.R
-import com.flowerish.cookla.adapters.MenuPagerAdapter
 import com.flowerish.cookla.databinding.FragmentMenuBinding
 import com.flowerish.cookla.databinding.LayoutAddMenuPopupBinding
 import com.flowerish.cookla.observeInLifecycle
+import com.flowerish.cookla.ui.adapters.MenuPagerAdapter
 import com.flowerish.cookla.viewModels.MenuViewModel
 import com.flowerish.cookla.viewModels.MenuViewModel.MenuEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @AndroidEntryPoint

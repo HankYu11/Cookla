@@ -2,9 +2,9 @@ package com.flowerish.cookla.di
 
 import android.content.Context
 import androidx.room.Room
-import com.flowerish.cookla.database.FridgeDao
-import com.flowerish.cookla.database.FridgeDatabase
-import com.flowerish.cookla.network.ApiService
+import com.flowerish.cookla.data.database.FridgeDao
+import com.flowerish.cookla.data.database.FridgeDatabase
+import com.flowerish.cookla.data.network.ApiService
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -13,15 +13,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.withTimeout
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
-
-import okhttp3.logging.HttpLoggingInterceptor
-
-
 
 
 @Module
@@ -29,7 +25,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext appContext: Context): FridgeDatabase{
+    fun provideDatabase(@ApplicationContext appContext: Context): FridgeDatabase {
         return Room.databaseBuilder(
             appContext,
             FridgeDatabase::class.java,
@@ -38,7 +34,7 @@ object DatabaseModule {
     }
 
     @Provides
-    fun getDao(database: FridgeDatabase): FridgeDao{
+    fun getDao(database: FridgeDatabase): FridgeDao {
         return database.getDao()
     }
 }

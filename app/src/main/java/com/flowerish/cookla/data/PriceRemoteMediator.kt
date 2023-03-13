@@ -1,14 +1,13 @@
 package com.flowerish.cookla.data
 
-import androidx.paging.*
-import androidx.room.withTransaction
-import com.flowerish.cookla.database.DatabaseAgriculture
-import com.flowerish.cookla.database.FridgeDao
-import com.flowerish.cookla.database.FridgeDatabase
-import com.flowerish.cookla.domain.Agriculture
-import com.flowerish.cookla.network.ApiService
-import com.flowerish.cookla.network.asDatabaseAgriculture
-import com.flowerish.cookla.network.asDomainAgriculture
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadType
+import androidx.paging.PagingState
+import androidx.paging.RemoteMediator
+import com.flowerish.cookla.data.database.DatabaseAgriculture
+import com.flowerish.cookla.data.database.FridgeDao
+import com.flowerish.cookla.data.network.ApiService
+import com.flowerish.cookla.data.network.asDatabaseAgriculture
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException

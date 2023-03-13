@@ -1,14 +1,14 @@
-package com.flowerish.cookla.repository
+package com.flowerish.cookla.data.repository
 
 
 import androidx.lifecycle.Transformations
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
-import com.flowerish.cookla.database.*
+import com.flowerish.cookla.data.database.*
+import com.flowerish.cookla.data.network.ApiService
+import com.flowerish.cookla.data.network.asDatabaseAgriculture
 import com.flowerish.cookla.domain.*
-import com.flowerish.cookla.network.ApiService
-import com.flowerish.cookla.network.asDatabaseAgriculture
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate

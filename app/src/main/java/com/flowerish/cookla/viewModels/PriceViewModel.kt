@@ -1,11 +1,12 @@
 package com.flowerish.cookla.viewModels
 
 import androidx.lifecycle.*
-import androidx.paging.*
-import com.flowerish.cookla.database.asDomainAgriculture
+import androidx.paging.insertSeparators
+import androidx.paging.map
+import com.flowerish.cookla.data.database.asDomainAgriculture
+import com.flowerish.cookla.data.network.MarketFilter
+import com.flowerish.cookla.data.repository.FridgeRepository
 import com.flowerish.cookla.domain.Agriculture
-import com.flowerish.cookla.network.MarketFilter
-import com.flowerish.cookla.repository.FridgeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
