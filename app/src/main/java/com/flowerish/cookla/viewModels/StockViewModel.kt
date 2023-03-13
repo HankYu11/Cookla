@@ -1,8 +1,11 @@
 package com.flowerish.cookla.viewModels
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.flowerish.cookla.Event
-import com.flowerish.cookla.repository.FridgeRepository
+import com.flowerish.cookla.data.repository.FridgeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate

@@ -1,19 +1,13 @@
-package com.flowerish.cookla.adapters
+package com.flowerish.cookla.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.flowerish.cookla.databinding.PagerItemMenuBinding
 import com.flowerish.cookla.domain.DayWithIngredients
-import com.flowerish.cookla.repository.FridgeRepository
 import com.flowerish.cookla.viewModels.MenuViewModel
-import kotlinx.coroutines.launch
-import java.time.temporal.WeekFields
-import java.util.*
-import kotlin.properties.Delegates
 
 class MenuPagerAdapter(val viewModel: MenuViewModel, val updateDayWithIngredients: (weekList: List<DayWithIngredients>, position: Int) -> Unit)
     : ListAdapter<List<DayWithIngredients>, MenuPagerAdapter.MenuViewHolder>(MenuDiffCallBack) {

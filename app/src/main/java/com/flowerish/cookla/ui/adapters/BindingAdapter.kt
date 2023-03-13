@@ -1,4 +1,4 @@
-package com.flowerish.cookla.adapters
+package com.flowerish.cookla.ui.adapters
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -7,8 +7,6 @@ import com.flowerish.cookla.R
 import com.flowerish.cookla.domain.BuyingIngredient
 import com.flowerish.cookla.domain.DayWithIngredients
 import com.flowerish.cookla.domain.Ingredient
-import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit

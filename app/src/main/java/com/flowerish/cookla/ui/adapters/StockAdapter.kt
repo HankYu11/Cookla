@@ -1,4 +1,4 @@
-package com.flowerish.cookla.adapters
+package com.flowerish.cookla.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,7 +23,7 @@ class StockAdapter : ListAdapter<Ingredient, StockAdapter.StockViewHolder>(Stock
             binding.ingredient = ingredient
         }
         companion object{
-            fun from(parent: ViewGroup): StockViewHolder{
+            fun from(parent: ViewGroup): StockViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 return StockViewHolder(RecyclerItemStockBinding.inflate(inflater, parent, false))
             }

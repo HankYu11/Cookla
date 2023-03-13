@@ -1,4 +1,4 @@
-package com.flowerish.cookla.adapters
+package com.flowerish.cookla.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,9 @@ import com.flowerish.cookla.databinding.RecyclerItemIngredientBinding
 import com.flowerish.cookla.domain.DayIngredient
 import com.flowerish.cookla.viewModels.MenuViewModel
 
-class DayIngredientAdapter(val viewModel: MenuViewModel): ListAdapter<DayIngredient,DayIngredientAdapter.IngredientViewHolder>(IngredientDiffUtil()) {
+class DayIngredientAdapter(val viewModel: MenuViewModel): ListAdapter<DayIngredient, DayIngredientAdapter.IngredientViewHolder>(
+    IngredientDiffUtil()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
         return IngredientViewHolder.from(parent)

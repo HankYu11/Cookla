@@ -1,4 +1,4 @@
-package com.flowerish.cookla.database
+package com.flowerish.cookla.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource

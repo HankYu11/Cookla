@@ -2,10 +2,9 @@ package com.flowerish.cookla.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.flowerish.cookla.data.network.ApiService
+import com.flowerish.cookla.data.network.asDomainAgriculture
 import com.flowerish.cookla.domain.Agriculture
-import com.flowerish.cookla.network.ApiService
-import com.flowerish.cookla.network.NetAgriculture
-import com.flowerish.cookla.network.asDomainAgriculture
 import retrofit2.HttpException
 import java.io.IOException
 
